@@ -1,0 +1,62 @@
+﻿@model CarrinhoCompraViewModel
+
+<div class="Container">
+    <div class="row">
+        <div style="display: flex; gap: 10px;padding: 0px">
+            <img src="~/carrinho-de-compras.png" style="height: 26px" />
+
+            <div>
+                <h4>Seu carrinho de compras</h4>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Quantidade</th>
+                    <th>Lanche</th>
+                    <th class="text-right">Preço</th>
+                    <th class="text-right">Subtotal</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model.CarrinhoCompra.CarrinhoCompraItens) {
+                    <tr>
+                        <td class="text-center">@item.Quantidade</td>
+                        <td class="text-left">@item.Lanche.Nome</td>
+                        <td class="text-right">@item.Lanche.Preco.ToString("c")</td>
+                        <td class="text-right">@((item.Quantidade * item.Lanche.Preco).ToString("c"))</td>
+                        <td class="text-center">
+                            <a asp-controller="CarrinhoCompra" asp-action="RemoverItemDoCarrinho" asp-route-lancheId="@item.Lanche.LancheId">
+                                <img src="~/lixo.png" />
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="text-right">
+                        Total:
+                    </td>
+                    <td class="text-right">
+                        @Model.CarrinhoCompraTotal.ToString("c")
+                    </td>
+                </tr>
+            </tfoot>
+
+        </table>
+        <div style="padding: 0px; margin: 0px; display: flex; align-items: flex-start; justify-content: flex-start">
+            <div>
+                @if(Model.CarrinhoCompra.CarrinhoCompraItens.Count > 0) {
+                    <a class="btn btn-primary" asp-controller="Pedido" asp-action="Checkout">Encerrar Pedido</a>
+                }
+                <a class="btn btn-outline-secondary" asp-controller="Lanche" asp-action="List">Continuar Comprando</a>
+            </div>
+        </div>
+        <br />
+    
+    </div>
+</div>
+
